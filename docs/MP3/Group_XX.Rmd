@@ -1,0 +1,72 @@
+---
+title: "Your title here"
+author: "Group XX: Albert Y. Kim and P.K. Subban"
+date: "November 30th, 2018"
+output:
+  html_document:
+    highlight: tango
+    theme: cosmo
+    toc: yes
+    toc_depth: 2
+    toc_float:
+      collapsed: false
+    df_print: kable
+---
+
+Read the following bullet points first and then delete them before submitting your work:
+
+* See on Line 8 above we set the theme? You can personalize the HTML 
+output theme! See the following [gallery](http://www.datadreaming.org/post/r-markdown-theme-gallery/).
+* For R Markdown formatting tips, look at RStudio Menu Bar -> Help ->
+    + Markdown Quick Reference Guide
+    + Cheatsheets -> R Markdown Cheat Sheet
+* The code chunk/block below sets the R Markdown chunk defaults. In other words, if you don't override a subsequent R Markdown code chunk/block's particular options, the following defaults apply. See the first code chunk in "Subsection" for an example of overriding the defaults.
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+# Set R Markdown chunk defaults:
+knitr::opts_chunk$set(
+  echo = FALSE, message = FALSE, warning = FALSE, 
+  fig.width = 16/2, fig.height = 9/2
+)
+```
+
+
+```{r}
+# Load all necessary packages here. It's a good idea to load all packages at 
+# the beginning of a Rmd file so that collaborators can see in one shot all
+# packages they'll need to ensure are installed beforehand:
+library(tidyverse)
+
+
+# Do your data loading and wrangling (if any) here:
+
+```
+
+
+# Section 1
+
+Hello world
+
+## Subsection 1.1
+
+```{r, echo = TRUE}
+
+```
+
+# Section 2
+
+## Subsection 2.1
+
+```{r}
+
+```
+
+## Subsection 2.2
+
+
+
+
+
+# References and Citations
+
+* [For Big-Data Scientists, ‘Janitor Work’ Is Key Hurdle to Insights](https://www.nytimes.com/2014/08/18/technology/for-big-data-scientists-hurdle-to-insights-is-janitor-work.html){target="_blank"}, New York Times, August 17 2014.

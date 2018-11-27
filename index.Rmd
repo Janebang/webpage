@@ -8,7 +8,7 @@ output:
     toc_depth: 2
     toc_float: true
     df_print: kable
-    theme: yeti
+   
 ---
 
 <!--
