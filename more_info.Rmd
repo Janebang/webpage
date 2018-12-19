@@ -1,0 +1,168 @@
+---
+title: "Is a wealthest person a healthest person as well?"
+author: ""
+date: "Last updated on `r Sys.Date()`"
+output:
+  html_document:
+    code_folding: hide
+    toc: true
+    toc_depth: 2
+    toc_float: true
+    df_print: kable
+---
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+# Set R Markdown chunk defaults:
+knitr::opts_chunk$set(
+  echo = FALSE, message = FALSE, warning = FALSE, 
+  fig.width = 16/2, fig.height = 9/2
+)
+```
+
+
+```{r}
+library(tidyr)
+library(dplyr)
+library(maps)
+library(readr)
+library(stringr)
+library(ggplot2)
+library(mosaic)
+```
+
+
+
+
+```{r}
+# Calling median income dataset into Rmd
+median_income <- read.csv("median-household-income-by-state.csv")
+
+# Tidy the dataset
+median_income <- median_income %>% 
+  na.omit() %>%
+  select(-Year) %>%
+  gather("State", "income_median") 
+
+
+# Renaming some states
+median_income$State[median_income$State == "New.Mexico"] <- 
+  "New Mexico"
+median_income$State[median_income$State == "New.York"] <- 
+  "New York"
+median_income$State[median_income$State == "West.Virginia"] <-
+  "West Virginia"
+median_income$State[median_income$State == "North.Carolina"] <- 
+  "North Carolina"
+median_income$State[median_income$State == "South.Carolina"] <- 
+  "South Carolina"
+median_income$State[median_income$State == "South.Dakota"] <-
+  "South Dakota"
+median_income$State[median_income$State == "North.Dakota"] <-
+  "North Dakota"
+median_income$State[median_income$State == "Rhode.Island"] <-
+  "Rhode Island"
+median_income$State[median_income$State == "New.Jersey"] <- 
+  "New Jersey"
+median_income$State[median_income$State == "District.of.Columbia"] <- "District of Columbia"
+median_income$State[median_income$State == "New.Hampshire"] <-
+  "New Hampshire"
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+# Lower the Income, Higher the Risk of Obesity
+
+```{r}
+# Calling the dataset and renaming one column
+US_health <- read.csv("2016-Annual.csv")
+colnames(US_health)[colnames(US_health)=="State.Name"] <- "State"
+
+# Filtering out the dataset to have only obesity info
+obese <- US_health %>%
+  filter(Measure.Name == "Obesity") %>%
+  select("State", "Measure.Name","Rank","Value","Score")
+
+# Joining median income and obesity info dataset
+obese_income <- inner_join(median_income, obese, by = "State")
+
+# Making a scatterplot to see the relationship between income and obesity
+ggplot(obese_income, aes(x=income_median, y=Value))+
+  geom_point()+
+  labs(x = "Median Income in dollar",
+       y = "% of adults with 
+       a body mass index of 30 or Higher",
+       title = "Obesity and Income relationship")
+
+
+
+```
+
+How does socioeconomic status influence health? The current rate of the obesity epidemic in the United States can shed some light on the relationship between these two factors. The graph below presents a clear depiction of the correlation between income and obesity rates in the United States. As the income increases, as indicated on the x-axis,  the rate of obesity, denoted by the y-decreases considerably. Obesity is defined as a condition where an individual has an excess amount of body fat, referring to when one’s Body Mass Index is 30 or greater. About one in six young adults are diagnosed, with ages ranging from ten to seventeen^[“Homepage.” The State of Obesity, stateofobesity.org/].  There are many causes of obesity ranging from genetics to environmental factors, which is one of the leading causes of this disease^[Fitzgerald, Kelly. “Obesity Is Now A Disease, American Medical Association Decides.” Medical News Today, MediLexicon International, 17 Aug. 2013, www.medicalnewstoday.com/articles/262226.php]. 
+
+According to research^[“Factors Contributing to Obesity.” Food Research & Action Center, www.frac.org/obesity-health/factors-contributing-obesity.
+], individual behaviors and environmental factors contribute to excessive caloric intake and inadequate physical activities. The current high rates of obesity have been attributed to various reasons: increased snacking, eating away from home, consuming larger portion sizes, greater exposure to food advertising, limited access to physical activity opportunities, and labor-saving technological advances. Besides those reasons, income can be another factor for obesity. To explain why people with^[Kim, Tae Jun, and Olaf Von dem Knesebeck. “ 1. Income and Obesity: What Is the Direction of the Relationship? A Systematic Review and Meta-Analysis.” BMJ Open, 5 Jan. 2018, doi:10.1136/bmjopen-2017-01986] lower income are more vulnerable to obesity, the framework of social determinants of health indicates that material conditions confine one’s access to healthy food and healthcare, while also influencing health-related behaviors, such as dietary behaviors and physical activity, and psychosocial factors that derive from relative deprivation (eg, control over life, insecurity, social isolation, stress). Like the other researches^[Levine, James A. “Poverty and Obesity in the U.S.” American Diabetes Association , Nov. 2011, doi:http://doi.org/10.2337db11-1118.], the plot below tells the relationship between income and obesity; as income increases, the obesity rate decreases, which means the wealthier you are, less obese you will be.   
+
+# Health Funding
+
+The link between income and health is clear. Unfortunately, the answer to the question of how to raise a population's health is not just simply to increase the median salary. We have to look at how states with low general health are being supported. 
+
+## General Health by State
+```{r}
+
+
+# Creating a data named Gen_health including general health status info
+Gen_Health <- US_health %>%
+  filter(Measure.Name == "Obesity"|
+         Measure.Name == "Air Pollution"|
+         Measure.Name == "Infectious Disease"|
+         Measure.Name == "Diabetes"|
+         Measure.Name == "Frequent Mental Distress"|
+         Measure.Name == "Frequent Physical Distress") %>%
+  group_by(State) %>%
+  # To see which state ranks the highest rate on general health
+  summarise(Health_Rank = sum(Rank)/6)
+
+# Create a static map how states are ranked in terms of general health
+mUSMap(Gen_Health, key= "State", fill= "Health_Rank") +
+ labs(title = "General Health By State")+
+  scale_fill_gradient(name = "Rank",
+          low = "#FFFFFF", high = "#FF5151")
+
+
+
+```
+
+The map above shows how each state is ranked in terms of general health. A darker color means a lower rank and therefore poor health compared to the rest of the states. The six factors taken into consideration are obesity, air pollution, infectious diseases, diabetes, frequent mental distress, and frequent physical distress. There is a clear trend of southern states having lower overall health in comparison. 
+
+The map below shows how each state is ranked in terms of federal and state-directed to public health. The distribution is not extremely uneven but when the two maps are compared
+
+## Health Funding by State
+```{r}
+# Filtering out the dataset to have only public health funding info
+public_funding <- US_health %>% 
+  filter(Measure.Name == "Public Health Funding")
+
+# Creating a static map on how states are ranked in terms of 
+mUSMap(public_funding, key= "State", fill= "Rank") +
+ labs(title = "Health Funding")+
+    scale_fill_gradient(name = "Rank",
+          low = "#317ef9", high = "#FFFFFF")
+
+```
+
+
+
+
+
+
+
+

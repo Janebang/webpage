@@ -1,36 +1,102 @@
 ---
-title: "My Website"
-author: "Jane Bang"
-date: "Last updated on `r Sys.Date()`"
+title: "The Wealthest State"
+author: "Genel McLean, Caleb Staples, Jane Bang"
+date: "12/11/2018"
 output:
   html_document:
-    toc: true
-    toc_depth: 2
-    toc_float: true
+    code_folding: hide
+    highlight: tango
+    theme: readable
+    toc: yes
+    toc_depth: 3
+    toc_float:
+      collapsed: false
     df_print: kable
-    
-   
 ---
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+# Set R Markdown chunk defaults:
+knitr::opts_chunk$set(
+  echo = FALSE, message = FALSE, warning = FALSE, 
+  fig.width = 16/2, fig.height = 9/2
+)
 
-<!--
-Comments in HTML are like this! 
--->
+```
 
-
-This is my website.
-
-# My first section
 
 ```{r}
+
+library(tidyr)
+library(dplyr)
+library(maps)
+library(readr)
+library(stringr)
+library(mapdata)
 library(ggplot2)
-ggplot(mtcars, aes(x=cyl, y= mpg)) +
-  geom_point() +
-  labs(x= "Number of cylinders", y = "Miles per gallon")
+library(R.utils)
+library(mosaic)
 ```
 
 
-# My second section
+
+
+
+
+
+# Economic Status and Health
+Have you ever wondered if there was a link between your health and the amount of money you make? If it does, do you think that the role it plays is important? When it comes to our socioeconomic status, it is identified as the most prominent factor that influences our lives, especially when it comes to our health^[Braveman, Paula, and Laura Gottlieb. “The Social Determinants of Health: Its Time to Consider the Causes of the Causes.” Public Health Reports, vol. 129, no. 1_suppl2, 2014, pp. 19–31]. One’s economic status refers to the social standing or class that is held by that individual. It is often measured by education, income, and occupation^[American Psychological Association, American Psychological Association, www.apa.org/topics/socioeconomic-status/.
+].  When discussing the impact of socioeconomic status we must focus on class in order to gain a better comprehension of the inconsistency in a type of healthcare^[Becker, Gay, and Edwina Newsom. “Socioeconomic Status and Dissatisfaction With Health Care Among Chronically Ill African Americans.” American Journal of Public Health, vol. 93, no. 5, 2003, pp. 742–748.] and preventions methods that are available. 
+
+The data used in this analysis was gathered from America’s Health Rankings and the United States Census Bureau. America’s Health Rankings is a foundation that supplies a range of health-related information^[https://www.americashealthrankings.org], with the aim of promoting change.  The data from their site contained state-based information about health from the 2016 annual report. While the data from the United States Census Bureau provided information about the average household income by each state in 2016, as shown in the map below. The census bureau is recognized for producing accessible data about government and its people in the US^[US Census Bureau. Census Bureau QuickFacts, United States Census Bureau, www.census.gov/en.html.
+]. With the information at hand, we set out to identify the correlation between the median household income by state and its association with overall health and care provided. 
+
+
+According to the map, New Hampshire had the highest income and Mississippi had the lowest income in 2016.
 
 ```{r}
-head(mtcars)
+median_income <- read.csv("median-household-income-by-state.csv")
+
+# Tidy the dataset
+median_income <- median_income %>% 
+  na.omit() %>%
+  select(-Year) %>%
+  gather("State", "income_median") 
+
+median_income <- median_income %>%
+  arrange(income_median)
+
+# Renaming some states
+median_income$State[median_income$State == "New.Mexico"] <- 
+  "New Mexico"
+median_income$State[median_income$State == "New.York"] <- 
+  "New York"
+median_income$State[median_income$State == "West.Virginia"] <-
+  "West Virginia"
+median_income$State[median_income$State == "North.Carolina"] <- 
+  "North Carolina"
+median_income$State[median_income$State == "South.Carolina"] <- 
+  "South Carolina"
+median_income$State[median_income$State == "South.Dakota"] <-
+  "South Dakota"
+median_income$State[median_income$State == "North.Dakota"] <-
+  "North Dakota"
+median_income$State[median_income$State == "Rhode.Island"] <-
+  "Rhode Island"
+median_income$State[median_income$State == "New.Jersey"] <- 
+  "New Jersey"
+median_income$State[median_income$State == "District.of.Columbia"] <- "District of Columbia"
+median_income$State[median_income$State == "New.Hampshire"] <-
+  "New Hampshire"
+
+
+# Create a static map on median income by each state
+mUSMap(median_income, key= "State", fill= "income_median") +
+  labs(title = "State Income")
+
+
 ```
+
+
+
+
+
+
