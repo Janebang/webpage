@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Genel McLean, Caleb Staples, Jane Bang" />
+
+
+<title></title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/readable.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 66px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 71px;
+  margin-top: -71px;
+}
+
+.section h2 {
+  padding-top: 71px;
+  margin-top: -71px;
+}
+.section h3 {
+  padding-top: 71px;
+  margin-top: -71px;
+}
+.section h4 {
+  padding-top: 71px;
+  margin-top: -71px;
+}
+.section h5 {
+  padding-top: 71px;
+  margin-top: -71px;
+}
+.section h6 {
+  padding-top: 71px;
+  margin-top: -71px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">The Influence of Wealth on Health</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="more_info.html">More info</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+
+</div>
+
+
+<div id="lower-the-income-higher-the-risk-of-obesity" class="section level1">
+<h1>Lower the Income, Higher the Risk of Obesity</h1>
+<p><img src="more_info_files/figure-html/unnamed-chunk-4-1.png" width="768" /></p>
+<p>How does socioeconomic status influence health? The current rate of the obesity epidemic in the United States can shed some light on the relationship between these two factors. The graph below presents a clear depiction of the correlation between income and obesity rates in the United States. As the income increases, as indicated on the x-axis, the rate of obesity, denoted by the y-decreases considerably. Obesity is defined as a condition where an individual has an excess amount of body fat, referring to when one’s Body Mass Index is 30 or greater. About one in six young adults are diagnosed, with ages ranging from ten to seventeen<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>. There are many causes of obesity ranging from genetics to environmental factors, which is one of the leading causes of this disease<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a>.</p>
+<p>According to research<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a>, individual behaviors and environmental factors contribute to excessive caloric intake and inadequate physical activities. The current high rates of obesity have been attributed to various reasons: increased snacking, eating away from home, consuming larger portion sizes, greater exposure to food advertising, limited access to physical activity opportunities, and labor-saving technological advances. Besides those reasons, income can be another factor for obesity. To explain why people with<a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a> lower income are more vulnerable to obesity, the framework of social determinants of health indicates that material conditions confine one’s access to healthy food and healthcare, while also influencing health-related behaviors, such as dietary behaviors and physical activity, and psychosocial factors that derive from relative deprivation (eg, control over life, insecurity, social isolation, stress). Like the other researches<a href="#fn5" class="footnoteRef" id="fnref5"><sup>5</sup></a>, the plot below tells the relationship between income and obesity; as income increases, the obesity rate decreases, which means the wealthier you are, less obese you will be.</p>
+</div>
+<div id="health-funding" class="section level1">
+<h1>Health Funding</h1>
+<p>The link between income and health is clear. Unfortunately, the answer to the question of how to raise a population’s health is not just simply to increase the median salary. We have to look at how states with low general health are being supported.</p>
+<div id="general-health-by-state" class="section level2">
+<h2>General Health by State</h2>
+<p><img src="more_info_files/figure-html/unnamed-chunk-5-1.png" width="768" /></p>
+<p>The map above shows how each state is ranked in terms of general health. A darker color means a lower rank and therefore poor health compared to the rest of the states. The six factors taken into consideration are obesity, air pollution, infectious diseases, diabetes, frequent mental distress, and frequent physical distress. There is a clear trend of southern states having lower overall health in comparison.</p>
+<p>The map below shows how each state is ranked in terms of federal and state-directed to public health. The distribution is not extremely uneven but when the two maps are compared</p>
+</div>
+<div id="health-funding-by-state" class="section level2">
+<h2>Health Funding by State</h2>
+<p><img src="more_info_files/figure-html/unnamed-chunk-6-1.png" width="768" /></p>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>“Homepage.” The State of Obesity, stateofobesity.org/<a href="#fnref1">↩</a></p></li>
+<li id="fn2"><p>Fitzgerald, Kelly. “Obesity Is Now A Disease, American Medical Association Decides.” Medical News Today, MediLexicon International, 17 Aug. 2013, www.medicalnewstoday.com/articles/262226.php<a href="#fnref2">↩</a></p></li>
+<li id="fn3"><p>“Factors Contributing to Obesity.” Food Research &amp; Action Center, www.frac.org/obesity-health/factors-contributing-obesity.<a href="#fnref3">↩</a></p></li>
+<li id="fn4"><p>Kim, Tae Jun, and Olaf Von dem Knesebeck. “ 1. Income and Obesity: What Is the Direction of the Relationship? A Systematic Review and Meta-Analysis.” BMJ Open, 5 Jan. 2018, <a href="doi:10.1136/bmjopen-2017-01986" class="uri">doi:10.1136/bmjopen-2017-01986</a><a href="#fnref4">↩</a></p></li>
+<li id="fn5"><p>Levine, James A. “Poverty and Obesity in the U.S.” American Diabetes Association , Nov. 2011, <a href="doi:http://doi.org/10.2337db11-1118" class="uri">doi:http://doi.org/10.2337db11-1118</a>.<a href="#fnref5">↩</a></p></li>
+</ol>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
