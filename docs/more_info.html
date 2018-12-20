@@ -27,6 +27,52 @@
 <script src="site_libs/navigation-1.1/codefolding.js"></script>
 
 
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; background-color: #f8f8f8; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+pre, code { background-color: #f8f8f8; }
+code > span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code > span.dt { color: #204a87; } /* DataType */
+code > span.dv { color: #0000cf; } /* DecVal */
+code > span.bn { color: #0000cf; } /* BaseN */
+code > span.fl { color: #0000cf; } /* Float */
+code > span.ch { color: #4e9a06; } /* Char */
+code > span.st { color: #4e9a06; } /* String */
+code > span.co { color: #8f5902; font-style: italic; } /* Comment */
+code > span.ot { color: #8f5902; } /* Other */
+code > span.al { color: #ef2929; } /* Alert */
+code > span.fu { color: #000000; } /* Function */
+code > span.er { color: #a40000; font-weight: bold; } /* Error */
+code > span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #000000; } /* Constant */
+code > span.sc { color: #000000; } /* SpecialChar */
+code > span.vs { color: #4e9a06; } /* VerbatimString */
+code > span.ss { color: #4e9a06; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #000000; } /* Variable */
+code > span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code > span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code > span.ex { } /* Extension */
+code > span.at { color: #c4a000; } /* Attribute */
+code > span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code > span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+div.sourceCode {
+  overflow-x: visible;
+}
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
 
 
 <style type="text/css">
@@ -301,8 +347,71 @@ div.tocify {
 </div>
 
 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Set R Markdown chunk defaults:</span>
+knitr::opts_chunk$<span class="kw">set</span>(
+  <span class="dt">echo =</span> <span class="ot">TRUE</span>, <span class="dt">message =</span> <span class="ot">FALSE</span>, <span class="dt">warning =</span> <span class="ot">FALSE</span>, 
+  <span class="dt">fig.width =</span> <span class="dv">16</span>/<span class="dv">2</span>, <span class="dt">fig.height =</span> <span class="dv">9</span>/<span class="dv">2</span>
+)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyr)
+<span class="kw">library</span>(dplyr)
+<span class="kw">library</span>(maps)
+<span class="kw">library</span>(readr)
+<span class="kw">library</span>(stringr)
+<span class="kw">library</span>(ggplot2)
+<span class="kw">library</span>(mosaic)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Calling median income dataset into Rmd</span>
+median_income &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;median-household-income-by-state.csv&quot;</span>)
+
+<span class="co"># Tidy the dataset</span>
+median_income &lt;-<span class="st"> </span>median_income %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">na.omit</span>() %&gt;%
+<span class="st">  </span><span class="kw">select</span>(-Year) %&gt;%
+<span class="st">  </span><span class="kw">gather</span>(<span class="st">&quot;State&quot;</span>, <span class="st">&quot;income_median&quot;</span>) 
+
+
+<span class="co"># Renaming some states</span>
+median_income$State[median_income$State ==<span class="st"> &quot;New.Mexico&quot;</span>] &lt;-<span class="st"> </span>
+<span class="st">  &quot;New Mexico&quot;</span>
+median_income$State[median_income$State ==<span class="st"> &quot;New.York&quot;</span>] &lt;-<span class="st"> </span>
+<span class="st">  &quot;New York&quot;</span>
+median_income$State[median_income$State ==<span class="st"> &quot;West.Virginia&quot;</span>] &lt;-
+<span class="st">  &quot;West Virginia&quot;</span>
+median_income$State[median_income$State ==<span class="st"> &quot;North.Carolina&quot;</span>] &lt;-<span class="st"> </span>
+<span class="st">  &quot;North Carolina&quot;</span>
+median_income$State[median_income$State ==<span class="st"> &quot;South.Carolina&quot;</span>] &lt;-<span class="st"> </span>
+<span class="st">  &quot;South Carolina&quot;</span>
+median_income$State[median_income$State ==<span class="st"> &quot;South.Dakota&quot;</span>] &lt;-
+<span class="st">  &quot;South Dakota&quot;</span>
+median_income$State[median_income$State ==<span class="st"> &quot;North.Dakota&quot;</span>] &lt;-
+<span class="st">  &quot;North Dakota&quot;</span>
+median_income$State[median_income$State ==<span class="st"> &quot;Rhode.Island&quot;</span>] &lt;-
+<span class="st">  &quot;Rhode Island&quot;</span>
+median_income$State[median_income$State ==<span class="st"> &quot;New.Jersey&quot;</span>] &lt;-<span class="st"> </span>
+<span class="st">  &quot;New Jersey&quot;</span>
+median_income$State[median_income$State ==<span class="st"> &quot;District.of.Columbia&quot;</span>] &lt;-<span class="st"> &quot;District of Columbia&quot;</span>
+median_income$State[median_income$State ==<span class="st"> &quot;New.Hampshire&quot;</span>] &lt;-
+<span class="st">  &quot;New Hampshire&quot;</span></code></pre></div>
 <div id="lower-the-income-higher-the-risk-of-obesity" class="section level1">
 <h1>Lower the Income, Higher the Risk of Obesity</h1>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Calling the dataset and renaming one column</span>
+US_health &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;2016-Annual.csv&quot;</span>)
+<span class="kw">colnames</span>(US_health)[<span class="kw">colnames</span>(US_health)==<span class="st">&quot;State.Name&quot;</span>] &lt;-<span class="st"> &quot;State&quot;</span>
+
+<span class="co"># Filtering out the dataset to have only obesity info</span>
+obese &lt;-<span class="st"> </span>US_health %&gt;%
+<span class="st">  </span><span class="kw">filter</span>(Measure.Name ==<span class="st"> &quot;Obesity&quot;</span>) %&gt;%
+<span class="st">  </span><span class="kw">select</span>(<span class="st">&quot;State&quot;</span>, <span class="st">&quot;Measure.Name&quot;</span>,<span class="st">&quot;Rank&quot;</span>,<span class="st">&quot;Value&quot;</span>,<span class="st">&quot;Score&quot;</span>)
+
+<span class="co"># Joining median income and obesity info dataset</span>
+obese_income &lt;-<span class="st"> </span><span class="kw">inner_join</span>(median_income, obese, <span class="dt">by =</span> <span class="st">&quot;State&quot;</span>)
+
+<span class="co"># Making a scatterplot to see the relationship between income and obesity</span>
+<span class="kw">ggplot</span>(obese_income, <span class="kw">aes</span>(<span class="dt">x=</span>income_median, <span class="dt">y=</span>Value))+
+<span class="st">  </span><span class="kw">geom_point</span>()+
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Median Income in dollar&quot;</span>,
+       <span class="dt">y =</span> <span class="st">&quot;% of adults with </span>
+<span class="st">       a body mass index of 30 or Higher&quot;</span>,
+       <span class="dt">title =</span> <span class="st">&quot;Obesity and Income relationship&quot;</span>)</code></pre></div>
 <p><img src="more_info_files/figure-html/unnamed-chunk-4-1.png" width="768" /></p>
 <p>How does socioeconomic status influence health? The current rate of the obesity epidemic in the United States can shed some light on the relationship between these two factors. The graph below presents a clear depiction of the correlation between income and obesity rates in the United States. As the income increases, as indicated on the x-axis, the rate of obesity, denoted by the y-decreases considerably. Obesity is defined as a condition where an individual has an excess amount of body fat, referring to when one’s Body Mass Index is 30 or greater. About one in six young adults are diagnosed, with ages ranging from ten to seventeen<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>. There are many causes of obesity ranging from genetics to environmental factors, which is one of the leading causes of this disease<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a>.</p>
 <p>According to research<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a>, individual behaviors and environmental factors contribute to excessive caloric intake and inadequate physical activities. The current high rates of obesity have been attributed to various reasons: increased snacking, eating away from home, consuming larger portion sizes, greater exposure to food advertising, limited access to physical activity opportunities, and labor-saving technological advances. Besides those reasons, income can be another factor for obesity. To explain why people with<a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a> lower income are more vulnerable to obesity, the framework of social determinants of health indicates that material conditions confine one’s access to healthy food and healthcare, while also influencing health-related behaviors, such as dietary behaviors and physical activity, and psychosocial factors that derive from relative deprivation (eg, control over life, insecurity, social isolation, stress). Like the other researches<a href="#fn5" class="footnoteRef" id="fnref5"><sup>5</sup></a>, the plot below tells the relationship between income and obesity; as income increases, the obesity rate decreases, which means the wealthier you are, less obese you will be.</p>
@@ -310,9 +419,35 @@ div.tocify {
 <div id="health-funding-income" class="section level1">
 <h1>Health Funding&amp; Income</h1>
 <p>The link between income and health is clear. Unfortunately, the answer to the question of how to raise a population’s health is not just simply to increase the median salary. We have to look at how states with low general health are being supported.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Creating a data named Gen_health including general health status info</span>
+Gen_Health &lt;-<span class="st"> </span>US_health %&gt;%
+<span class="st">  </span><span class="kw">filter</span>(Measure.Name ==<span class="st"> &quot;Obesity&quot;</span>|
+<span class="st">         </span>Measure.Name ==<span class="st"> &quot;Air Pollution&quot;</span>|
+<span class="st">         </span>Measure.Name ==<span class="st"> &quot;Infectious Disease&quot;</span>|
+<span class="st">         </span>Measure.Name ==<span class="st"> &quot;Diabetes&quot;</span>|
+<span class="st">         </span>Measure.Name ==<span class="st"> &quot;Frequent Mental Distress&quot;</span>|
+<span class="st">         </span>Measure.Name ==<span class="st"> &quot;Frequent Physical Distress&quot;</span>) %&gt;%
+<span class="st">  </span><span class="kw">group_by</span>(State) %&gt;%
+<span class="st">  </span><span class="co"># To see which state ranks the highest rate on general health</span>
+<span class="st">  </span><span class="kw">summarise</span>(<span class="dt">Health_Rank =</span> <span class="kw">sum</span>(Rank)/<span class="dv">6</span>)
+
+<span class="co"># Create a static map how states are ranked in terms of general health</span>
+<span class="kw">mUSMap</span>(Gen_Health, <span class="dt">key=</span> <span class="st">&quot;State&quot;</span>, <span class="dt">fill=</span> <span class="st">&quot;Health_Rank&quot;</span>) +
+<span class="st"> </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;General Health By State&quot;</span>)+
+<span class="st">  </span><span class="kw">scale_fill_gradient</span>(<span class="dt">name =</span> <span class="st">&quot;Rank&quot;</span>,
+          <span class="dt">low =</span> <span class="st">&quot;#FFFFFF&quot;</span>, <span class="dt">high =</span> <span class="st">&quot;#FF5151&quot;</span>)</code></pre></div>
 <p><img src="more_info_files/figure-html/unnamed-chunk-5-1.png" width="768" /></p>
 <p>The map above shows how each state is ranked in terms of general health. A darker color means a lower rank and therefore poor health compared to the rest of the states. The six factors taken into consideration are obesity, air pollution, infectious diseases, diabetes, frequent mental distress, and frequent physical distress. There is a clear trend of southern states having lower overall health in comparison.</p>
 <p>The map above shows how each state is ranked in terms of general health. A darker color means a lower ranking, therefore resulting in poor health compared to the rest of the states. The six factors taken into consideration are obesity, air pollution, infectious diseases, diabetes, frequent mental distress, and frequent physical distress.<a href="#fn6" class="footnoteRef" id="fnref6"><sup>6</sup></a> There is a clear trend of southern states having lower overall health by comparison. The map below shows how each state is ranked in terms of federal and state-directed funds to public health per person. The states that are darker have better public health funding. Although the southern states general health is bad by comparison, they get less public health funding per person that many of the states in the northwest and northeast that already rank very highly on the general health map. Distributing the state and federal money depending on where it is currently needed most may lead to an increase in public health in the south. Public health is a multifaceted issue and there is no one easy change that will cause a whole population to be healthier, but a change in the distribution of funds will benefit the south without taking away from other states and will bring the south to the public health standards of the rest of the country.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Filtering out the dataset to have only public health funding info</span>
+public_funding &lt;-<span class="st"> </span>US_health %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(Measure.Name ==<span class="st"> &quot;Public Health Funding&quot;</span>)
+
+<span class="co"># Creating a static map on how states are ranked in terms of </span>
+<span class="kw">mUSMap</span>(public_funding, <span class="dt">key=</span> <span class="st">&quot;State&quot;</span>, <span class="dt">fill=</span> <span class="st">&quot;Rank&quot;</span>) +
+<span class="st"> </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Federal and State Health Funding&quot;</span>)+
+<span class="st">    </span><span class="kw">scale_fill_gradient</span>(<span class="dt">name =</span> <span class="st">&quot;Rank&quot;</span>,
+          <span class="dt">low =</span> <span class="st">&quot;#317ef9&quot;</span>, <span class="dt">high =</span> <span class="st">&quot;#FFFFFF&quot;</span>)</code></pre></div>
 <p><img src="more_info_files/figure-html/unnamed-chunk-6-1.png" width="768" /></p>
 </div>
 <div class="footnotes">

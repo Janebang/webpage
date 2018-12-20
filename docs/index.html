@@ -28,6 +28,52 @@
 <script src="site_libs/navigation-1.1/codefolding.js"></script>
 
 
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; background-color: #f8f8f8; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+pre, code { background-color: #f8f8f8; }
+code > span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code > span.dt { color: #204a87; } /* DataType */
+code > span.dv { color: #0000cf; } /* DecVal */
+code > span.bn { color: #0000cf; } /* BaseN */
+code > span.fl { color: #0000cf; } /* Float */
+code > span.ch { color: #4e9a06; } /* Char */
+code > span.st { color: #4e9a06; } /* String */
+code > span.co { color: #8f5902; font-style: italic; } /* Comment */
+code > span.ot { color: #8f5902; } /* Other */
+code > span.al { color: #ef2929; } /* Alert */
+code > span.fu { color: #000000; } /* Function */
+code > span.er { color: #a40000; font-weight: bold; } /* Error */
+code > span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #000000; } /* Constant */
+code > span.sc { color: #000000; } /* SpecialChar */
+code > span.vs { color: #4e9a06; } /* VerbatimString */
+code > span.ss { color: #4e9a06; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #000000; } /* Variable */
+code > span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code > span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code > span.ex { } /* Extension */
+code > span.at { color: #c4a000; } /* Attribute */
+code > span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code > span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+div.sourceCode {
+  overflow-x: visible;
+}
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
 
 
 <style type="text/css">
@@ -173,7 +219,7 @@ $(document).ready(function ()  {
 
     // establish options
     var options = {
-      selectors: "h1,h2,h3",
+      selectors: "h1,h2",
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {
@@ -182,7 +228,7 @@ $(document).ready(function ()  {
       ignoreSelector: ".toc-ignore",
       scrollTo: 0
     };
-    options.showAndHide = false;
+    options.showAndHide = true;
     options.smoothScroll = true;
 
     // tocify
@@ -245,12 +291,6 @@ div.tocify {
   border-radius: 0px;
 }
 
-.tocify-subheader {
-  display: inline;
-}
-.tocify-subheader .tocify-item {
-  font-size: 0.95em;
-}
 
 </style>
 
@@ -311,11 +351,63 @@ div.tocify {
 </div>
 
 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Set R Markdown chunk defaults:</span>
+knitr::opts_chunk$<span class="kw">set</span>(
+  <span class="dt">echo =</span> <span class="ot">TRUE</span>, <span class="dt">message =</span> <span class="ot">FALSE</span>, <span class="dt">warning =</span> <span class="ot">FALSE</span>, 
+  <span class="dt">fig.width =</span> <span class="dv">16</span>/<span class="dv">2</span>, <span class="dt">fig.height =</span> <span class="dv">9</span>/<span class="dv">2</span>
+)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyr)
+<span class="kw">library</span>(dplyr)
+<span class="kw">library</span>(maps)
+<span class="kw">library</span>(readr)
+<span class="kw">library</span>(stringr)
+<span class="kw">library</span>(mapdata)
+<span class="kw">library</span>(ggplot2)
+<span class="kw">library</span>(R.utils)
+<span class="kw">library</span>(mosaic)</code></pre></div>
 <div id="economic-status-and-health" class="section level1">
 <h1>Economic Status and Health</h1>
 <p>Have you ever wondered if there was a link between your health and the amount of money you make? If it does, do you think that the role it plays is important? When it comes to our socioeconomic status, it is identified as the most prominent factor that influences our lives, especially when it comes to our health<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>. One’s economic status refers to the social standing or class that is held by that individual. It is often measured by education, income, and occupation<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a>. When discussing the impact of socioeconomic status we must focus on class in order to gain a better comprehension of the inconsistency in a type of healthcare<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a> and preventions methods that are available.</p>
 <p>The data used in this analysis was gathered from America’s Health Rankings and the United States Census Bureau. America’s Health Rankings is a foundation that supplies a range of health-related information<a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a>, with the aim of promoting change. The data from their site contained state-based information about health from the 2016 annual report. While the data from the United States Census Bureau provided information about the average household income by each state in 2016, as shown in the map below. The census bureau is recognized for producing accessible data about government and its people in the US<a href="#fn5" class="footnoteRef" id="fnref5"><sup>5</sup></a>. With the information at hand, we set out to identify the correlation between the median household income by state and its association with overall health and care provided.</p>
 <p>According to the map, New Hampshire had the highest income and Mississippi had the lowest income in 2016.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">median_income &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;median-household-income-by-state.csv&quot;</span>)
+
+<span class="co"># Tidy the dataset</span>
+median_income &lt;-<span class="st"> </span>median_income %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">na.omit</span>() %&gt;%
+<span class="st">  </span><span class="kw">select</span>(-Year) %&gt;%
+<span class="st">  </span><span class="kw">gather</span>(<span class="st">&quot;State&quot;</span>, <span class="st">&quot;income_median&quot;</span>) 
+
+median_income &lt;-<span class="st"> </span>median_income %&gt;%
+<span class="st">  </span><span class="kw">arrange</span>(income_median)
+
+<span class="co"># Renaming some states</span>
+median_income$State[median_income$State ==<span class="st"> &quot;New.Mexico&quot;</span>] &lt;-<span class="st"> </span>
+<span class="st">  &quot;New Mexico&quot;</span>
+median_income$State[median_income$State ==<span class="st"> &quot;New.York&quot;</span>] &lt;-<span class="st"> </span>
+<span class="st">  &quot;New York&quot;</span>
+median_income$State[median_income$State ==<span class="st"> &quot;West.Virginia&quot;</span>] &lt;-
+<span class="st">  &quot;West Virginia&quot;</span>
+median_income$State[median_income$State ==<span class="st"> &quot;North.Carolina&quot;</span>] &lt;-<span class="st"> </span>
+<span class="st">  &quot;North Carolina&quot;</span>
+median_income$State[median_income$State ==<span class="st"> &quot;South.Carolina&quot;</span>] &lt;-<span class="st"> </span>
+<span class="st">  &quot;South Carolina&quot;</span>
+median_income$State[median_income$State ==<span class="st"> &quot;South.Dakota&quot;</span>] &lt;-
+<span class="st">  &quot;South Dakota&quot;</span>
+median_income$State[median_income$State ==<span class="st"> &quot;North.Dakota&quot;</span>] &lt;-
+<span class="st">  &quot;North Dakota&quot;</span>
+median_income$State[median_income$State ==<span class="st"> &quot;Rhode.Island&quot;</span>] &lt;-
+<span class="st">  &quot;Rhode Island&quot;</span>
+median_income$State[median_income$State ==<span class="st"> &quot;New.Jersey&quot;</span>] &lt;-<span class="st"> </span>
+<span class="st">  &quot;New Jersey&quot;</span>
+median_income$State[median_income$State ==<span class="st"> &quot;District.of.Columbia&quot;</span>] &lt;-<span class="st"> &quot;District of Columbia&quot;</span>
+median_income$State[median_income$State ==<span class="st"> &quot;New.Hampshire&quot;</span>] &lt;-
+<span class="st">  &quot;New Hampshire&quot;</span>
+
+
+<span class="co"># Create a static map on median income by each state</span>
+<span class="kw">mUSMap</span>(median_income, <span class="dt">key=</span> <span class="st">&quot;State&quot;</span>, <span class="dt">fill=</span> <span class="st">&quot;income_median&quot;</span>) +
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;State Income&quot;</span>)</code></pre></div>
 <p><img src="index_files/figure-html/unnamed-chunk-3-1.png" width="768" /></p>
 </div>
 <div class="footnotes">
